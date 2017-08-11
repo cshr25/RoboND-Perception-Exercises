@@ -1,0 +1,66 @@
+def pr2_mover(object_list):
+
+    # TODO: Initialize variables
+    labels = []
+    centroids = [] # to be list of tuples (x, y, z)
+    test_scene_num = Int32()
+    object_name = String()   
+    object_arm = String()
+    pick_pose = Pose()
+
+    # TODO: Get/Read parameters
+    #get parameters
+    object_list_param = rospy.get_param('/object_list')
+
+    # TODO: Parse parameters into individual variables
+    for i in range(0,len(object_list_param):
+	object_name.append(object_list_param[i]['name'])
+	object_group.append(object_list_param[i]['group'])   
+
+    # Compute object centroid      
+    for object in object_list:
+    	labels.append(object.label)
+
+	# TODO: Get the PointCloud for a given object and obtain it's centroid
+    	points_arr = ros_to_pcl(object.cloud).to_array()
+    	centroids.append(np.asscalar(np.mean(points_arr, axis=0)[:3]))
+ 
+    # Set scene number  
+    test_scene_num.data = 1    
+
+    # TODO: Rotate PR2 in place to capture side tables for the collision map
+    
+
+    # TODO: Loop through the pick list
+    for i in (0,len(object_list_param)):
+	# search if theis object is deteced
+	if object_name
+
+        # Populate the data field
+        object_name.data = object_list_param[i]['name']   
+	if  object_list_param[i]['group'] == green:
+	        object_arm.data = object_list_param[i]['group']
+
+	# TODO: Create 'place_pose' for the object
+    
+        # TODO: Assign the arm to be used for pick_place
+
+        # TODO: Create a list of dictionaries (made with make_yaml_dict()) for later output to yaml format
+
+        # Wait for 'pick_place_routine' service to come up
+    rospy.wait_for_service('pick_place_routine')
+
+    try:
+        pick_place_routine = rospy.ServiceProxy('pick_place_routine', PickPlace)
+
+            # TODO: Insert your message variables to be sent as a service request
+
+    resp = pick_place_routine(TEST_SCENE_NUM, OBJECT_NAME, WHICH_ARM, PICK_POSE, PLACE_POSE)
+
+    print ("Response: ",resp.success)
+
+        except rospy.ServiceException, e:
+            print "Service call failed: %s"%e
+
+    # TODO: Output your request parameters into output yaml file
+
