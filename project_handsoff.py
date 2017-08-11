@@ -61,7 +61,7 @@ def pcl_callback(pcl_msg):
 	outlier_filter = pcldata.make_statistical_outlier_filter()
 
 	# Set the number of neighboring points to analyze for any given point
-	outlier_filter.set_mean_k(50)
+	outlier_filter.set_mean_k(100)
 
 	# Set threshold scale factor
 	x = 1
@@ -79,7 +79,7 @@ def pcl_callback(pcl_msg):
 	# Choose a voxel (also known as leaf) size
 	# Note: this (1) is a poor choice of leaf size   
 	# Experiment and find the appropriate size!
-	LEAF_SIZE = 0.01   
+	LEAF_SIZE = 0.005   
 
 	# Set the voxel (or leaf) size  
 	vox.set_leaf_size(LEAF_SIZE, LEAF_SIZE, LEAF_SIZE)
@@ -96,13 +96,18 @@ def pcl_callback(pcl_msg):
 
 	# Assign axis and range to the passthrough filter object.
 	filter_axis = 'z'
-	passthrough.set_filter_field_name(filter_axis)
+	passthrough_z.set_filter_field_name(filter_axis)
 	axis_min = 0.6
-	axis_max = 1.1
-	passthrough.set_filter_limits(axis_min, axis_max)
+	axis_max = 1.5
+	passthrough_z.set_filter_limits(axis_min, axis_max)
+	pcldata_z_filtered = passthrough_z.filter()
 
-	# Finally use the filter function to obtain the resultant point cloud. 
-	pcldata_filtered = passthrough.filter()
+	passthrough_y = pcldata_z_filtered.make_passthrough_filter()
+	filter_axis = 'y'
+	passthrough_y.set_filter_field_name(filter_axis)
+	axis_min = -0.5
+	axis_max = 0.5
+	passthrough_y.set_filter_limits(axis_min, axis_max)
 
     # TODO: RANSAC Plane Segmentation
 	seg = pcldata_filtered.make_segmenter()
@@ -132,7 +137,7 @@ def pcl_callback(pcl_msg):
 	# as well as minimum and maximum cluster size (in points)
 	ec.set_ClusterTolerance(0.05)
 	ec.set_MinClusterSize(50)
-	ec.set_MaxClusterSize(1500)
+	ec.set_MaxClusterSize(2000)
 	# Search the k-d tree for clusters
 	ec.set_SearchMethod(tree)
 	# Extract indices for each of the discovered clusters
