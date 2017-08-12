@@ -15,7 +15,7 @@ def compute_color_histograms(cloud, using_hsv=False):
     # Compute histograms for the clusters
     point_colors_list = []
     
-    nbins=32
+    nbins=64
     bins_range=(0, 256)
 
     # Step through each point in the point cloud
@@ -50,7 +50,7 @@ def compute_color_histograms(cloud, using_hsv=False):
 
 
 def compute_normal_histograms(normal_cloud):
-    nbins=32
+    nbins=64
     bins_range=(0, 256)
     norm_x_vals = []
     norm_y_vals = []
